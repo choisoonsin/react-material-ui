@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  margin: 5px; /* outside */
+  padding: 2px; /* inside */
+  border: 1px solid red;
+}
+
+.listBox {
+  margin: 2px;
+  padding: 2px;
+  border: 1px solid purple;
+  border-radius: 0.5em;
+}
