@@ -1,21 +1,25 @@
 import {
+  Card,
+  CardContent,
   Container,
   LinearProgress,
-  List,
-  ListItem,
-  ListItemText,
+  Paper,
 } from "@material-ui/core";
 
 export default function UserList({ data }) {
   const { isLoading, displayUsers } = data;
   return (
     <Container fixed>
-      <List>
+      <Paper elevation={3} style={{ maxHeight: 400, overflow: "auto" }}>
         {!isLoading ? (
           displayUsers.length > 0 ? (
             displayUsers.map((value, idx) => (
-              <ListItem alignItems="flex-start" key={idx}>
-                <ListItemText>
+              <Card
+                key={idx}
+                variant="outlined"
+                style={{ marginBottom: "5px" }}
+              >
+                <CardContent>
                   <h3>{value.username}</h3>
                   <hr></hr>
                   <p>email:{value.email}</p>
@@ -23,18 +27,18 @@ export default function UserList({ data }) {
                     address:{value.address.street + " " + value.address.city}
                   </p>
                   <p>phone:{value.phone}</p>
-                </ListItemText>
-              </ListItem>
+                </CardContent>
+              </Card>
             ))
           ) : (
-            <ListItem alignItems="flex-start">
-              <ListItemText>Not found user</ListItemText>
-            </ListItem>
+            <Card variant="outlined">
+              <CardContent>Not found user</CardContent>
+            </Card>
           )
         ) : (
           <LinearProgress />
         )}
-      </List>
+      </Paper>
     </Container>
   );
 }
