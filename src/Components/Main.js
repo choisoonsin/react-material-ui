@@ -1,14 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
-import { dummyList } from "../Resources/dummy";
+// import { dummyList } from "../Resources/dummy";
 import SearchBar from "./SearchBar";
-import API from "../Helper/API";
+import Api from "../Helper/API";
+import UserList from "./UserList";
+import { Container } from "@material-ui/core";
 
 export default function Main() {
-  const [user, setUser] = useState(dummyList);
+  const api = new Api();
+  useEffect(() => {
+    async function fetchData() {
+      return await api
+        .getUsers()
+        .then((res) => res.data)
+        .then((data) =>
+          setUser({ initialUsers: data, displayUsers: data, isLoading: false })
+        );
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [user, setUser] = useState({
+    isLoading: true,
+    initialUsers: [],
+    displayUsers: [],
+  });
 
   const filterName = (userName) => {
-    return dummyList.filter((list) => {
+    return user.initialUsers.filter((list) => {
       return list.username.toLowerCase().indexOf(userName.toLowerCase()) > -1;
     });
   };
@@ -17,23 +37,21 @@ export default function Main() {
     const obj = e.target;
     console.log("Main Component=>", obj.value);
     console.clear();
-    setUser(filterName(obj.value));
-    console.log(API.test);
+    setUser({ ...user, displayUsers: filterName(obj.value) });
+  };
+
+  const handleAddBookButtonClick = (e) => {
+    console.log("handleAddBookButtonClick");
   };
 
   return (
-    <div className="container">
+    <Container maxWidth="sm">
       <h1>Hello this is a Main Component</h1>
-      <SearchBar handleInputChange={handleInputChange} />
-      {user.map((value, idx) => (
-        <div key={idx} className="listBox">
-          <h3>{value.username}</h3>
-          <hr></hr>
-          <p>email:{value.email}</p>
-          <p>address:{value.address.street + " " + value.address.city}</p>
-          <p>phone:{value.phone}</p>
-        </div>
-      ))}
-    </div>
+      <SearchBar
+        handleInputChange={handleInputChange}
+        handleAddBookButtonClick={handleAddBookButtonClick}
+      />
+      <UserList data={{ ...user }} />
+    </Container>
   );
 }

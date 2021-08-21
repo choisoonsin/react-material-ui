@@ -1,7 +1,19 @@
+import { Button, Container, Input } from "@material-ui/core";
+
 export default function SearchBar(props) {
+  const { handleInputChange, handleAddBookButtonClick } = props;
+
   return (
-    <div className="container">
-      <input type="text" onChange={props.handleInputChange}></input>
-    </div>
+    <Container maxWidth="sm" style={{ marginBottom: "10px" }}>
+      <Input color="primary" onChange={handleInputChange}></Input>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={handleAddBookButtonClick}
+      >
+        Add Book
+      </Button>
+    </Container>
   );
 }
