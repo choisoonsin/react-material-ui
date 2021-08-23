@@ -5,6 +5,8 @@ import SearchBar from "./SearchBar";
 import Api from "../Helper/API";
 import UserList from "./UserList";
 import { Container } from "@material-ui/core";
+import AddBookDialog from "./AddBookDialog";
+import Zoom from "@material-ui/core/Zoom";
 
 export default function Main() {
   const api = new Api();
@@ -27,6 +29,11 @@ export default function Main() {
     displayUsers: [],
   });
 
+  const [openAddBookDialog, setOpenAddBookDialog] = useState(false);
+  const handleClose = () => {
+    setOpenAddBookDialog(false);
+  };
+
   const filterName = (userName) => {
     return user.initialUsers.filter((list) => {
       return list.username.toLowerCase().indexOf(userName.toLowerCase()) > -1;
@@ -42,6 +49,7 @@ export default function Main() {
 
   const handleAddBookButtonClick = (e) => {
     console.log("handleAddBookButtonClick");
+    setOpenAddBookDialog(true);
   };
 
   return (
@@ -52,6 +60,7 @@ export default function Main() {
         handleAddBookButtonClick={handleAddBookButtonClick}
       />
       <UserList data={{ ...user }} />
+      <AddBookDialog onClose={handleClose} open={openAddBookDialog} />
     </Container>
   );
 }
